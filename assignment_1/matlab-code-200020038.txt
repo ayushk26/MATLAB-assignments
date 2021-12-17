@@ -1,0 +1,33 @@
+<f.m>
+function val = f(P,T,V)
+    a = 3.592;
+    b = 0.04267;
+    R = 0.082056;
+    val = P*V^3 - (P*b+R*T)*V^2 +a*V -a*b;
+  
+ return
+end
+
+<algo.m>
+function result = algo(V,P,T)
+delta = 0.01;
+newV = V - (f(P,T,V)*delta)/(f(P,T,V)-f(P,T,V-delta));
+
+if abs((newV- V)/newV) <= 0.00001
+    result = newV;
+    return
+else
+    result = algo(newV,P,T);
+    return
+end
+
+<main.m>
+P = 1:1:100;
+V = P;
+T=345;
+v1 = input("guess number");
+for i =P
+    V(i)= algo(v1,P(i),T);
+end
+V
+plot(P,V)
